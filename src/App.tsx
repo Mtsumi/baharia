@@ -1,5 +1,5 @@
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { Assumptions, Landing, Login, Materials, People, ResourcePage, SectionNav } from "./screens";
+import { Assumptions, CoursePage, Landing, Login, Materials, People, ResourcePage, SectionNav } from "./screens";
 import { useStore } from "./store";
 
 let leaving = false;
@@ -79,7 +79,8 @@ export function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/assumptions" element={<Assumptions />} />
         <Route path="/materials" element={<RequireAuth><Materials /></RequireAuth>} />
-        <Route path="/materials/:resourceId" element={<RequireAuth><ResourcePage /></RequireAuth>} />
+        <Route path="/materials/:courseId" element={<RequireAuth><CoursePage /></RequireAuth>} />
+        <Route path="/materials/:courseId/:unitId" element={<RequireAuth><ResourcePage /></RequireAuth>} />
         <Route path="/people" element={<RequireAuth><RequireAdmin><People /></RequireAdmin></RequireAuth>} />
         <Route path="*" element={<p>That page is not in this version.</p>} />
       </Routes>

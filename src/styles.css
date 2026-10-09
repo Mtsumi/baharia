@@ -343,12 +343,48 @@ td { padding: 10px 8px; border-top: 1px solid var(--line); }
   font-size: 15px;
   color: white;
 }
+.muted-toggle {
+  opacity: 0.55;
+  cursor: default;
+}
+.muted-toggle:hover { background: none; }
+
+.course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+}
+.course-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+a.course-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.course-card h2 {
+  margin: 0;
+  font-family: Fraunces, Georgia, serif;
+  font-size: 28px;
+  font-weight: 500;
+}
+.course-card p { margin: 0; color: var(--muted); }
+.course-card.soon { opacity: 0.72; }
+.chip.wait { background: #efe8d8; color: #6d624e; }
 
 .hero-bands {
   width: min(1120px, calc(100% - 40px));
   margin: 36px auto 0;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   position: relative;
   z-index: 1;
@@ -511,7 +547,7 @@ td { padding: 10px 8px; border-top: 1px solid var(--line); }
 .note-line { margin: 0 0 10px; font-size: 13px; color: var(--faint); }
 
 @media (max-width: 860px) {
-  .points, .gate, .adder, .card-top, .app, .hero-bands, .level-head { display: block; }
+  .points, .gate, .adder, .card-top, .app, .hero-bands, .level-head, .course-grid { display: block; }
   .point { border-right: 0; border-bottom: 1px solid var(--line); padding: 22px 0; }
   .point:last-child { border-bottom: 0; }
   .gate-brand, .gate-panel, .content { padding: 28px 20px; }

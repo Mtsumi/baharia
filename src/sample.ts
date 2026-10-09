@@ -10,10 +10,19 @@ export type Person = {
   email: string;
 };
 
+export type CourseId = "nautical-science" | "marine-engineering" | "port-operations";
 export type LevelId = "level5" | "level6";
+
+export type Course = {
+  id: CourseId;
+  title: string;
+  summary: string;
+  status: "open" | "coming";
+};
 
 export type Level = {
   id: LevelId;
+  courseId: CourseId;
   title: string;
   knqf: string;
   code: string;
@@ -29,6 +38,7 @@ export type LessonPart = {
 
 export type Unit = {
   id: string;
+  courseId: CourseId;
   levelId: LevelId;
   title: string;
   hours: number;
@@ -40,14 +50,31 @@ export type Unit = {
   teachingNotes?: string[];
 };
 
-export const course = {
-  title: "Nautical Science",
-  summary: "Competency-based programmes for deck ratings and officers of the watch.",
-};
+export const courses: Course[] = [
+  {
+    id: "nautical-science",
+    title: "Nautical Science",
+    summary: "Deck ratings and officers of the watch — KNQF Level 5 and Level 6.",
+    status: "open",
+  },
+  {
+    id: "marine-engineering",
+    title: "Marine Engineering",
+    summary: "Engine-room pathway for ratings and officers. Units to be added next.",
+    status: "coming",
+  },
+  {
+    id: "port-operations",
+    title: "Port Operations",
+    summary: "Shore-side operations and logistics for port and terminal teams.",
+    status: "coming",
+  },
+];
 
 export const levels: Level[] = [
   {
     id: "level5",
+    courseId: "nautical-science",
     title: "Level 5",
     knqf: "KNQF Level 5",
     code: "1041 454 A",
@@ -57,6 +84,7 @@ export const levels: Level[] = [
   },
   {
     id: "level6",
+    courseId: "nautical-science",
     title: "Level 6",
     knqf: "KNQF Level 6",
     code: "1041 554 A",
@@ -69,6 +97,7 @@ export const levels: Level[] = [
 export const units: Unit[] = [
   {
     id: "l5-seamanship",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Seamanship Practices",
     hours: 80,
@@ -82,6 +111,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-watchkeeping",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Watchkeeping Practices",
     hours: 80,
@@ -95,6 +125,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-deck-machinery",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Deck Machinery & Cargo Gear",
     hours: 70,
@@ -108,6 +139,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-mooring",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Berthing, Anchoring & Mooring",
     hours: 70,
@@ -121,6 +153,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-cargo",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Cargo Handling & Stowage",
     hours: 80,
@@ -134,6 +167,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-ship-handling",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Ship Handling & Manoeuvring",
     hours: 70,
@@ -147,6 +181,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-emergencies",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Emergencies at Sea and in Port",
     hours: 60,
@@ -160,6 +195,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-chartwork",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Basic Chartwork Practices",
     hours: 80,
@@ -173,6 +209,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-stability",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Ship Stability Principles",
     hours: 80,
@@ -186,6 +223,7 @@ export const units: Unit[] = [
   },
   {
     id: "l5-stcw-safety",
+    courseId: "nautical-science",
     levelId: "level5",
     title: "Basic Sea Safety (STCW)",
     hours: 50,
@@ -200,6 +238,7 @@ export const units: Unit[] = [
 
   {
     id: "l6-seamanship",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Seamanship Practices",
     hours: 100,
@@ -213,6 +252,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-navigation",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Navigation Principles",
     hours: 120,
@@ -253,6 +293,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-chartwork",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Chartwork Practices",
     hours: 90,
@@ -266,6 +307,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-celestial",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Celestial Navigation",
     hours: 100,
@@ -279,6 +321,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-bridge",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Bridge Equipment & Systems",
     hours: 80,
@@ -292,6 +335,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-electronic-nav",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Electronic Navigation Equipment",
     hours: 80,
@@ -305,6 +349,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-cargo",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Cargo Handling & Stowage",
     hours: 90,
@@ -318,6 +363,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-watchkeeping",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Watchkeeping Duties",
     hours: 150,
@@ -360,6 +406,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-voyage",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Voyage Planning & Ocean Passage",
     hours: 100,
@@ -375,6 +422,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-ship-handling",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Ship Handling",
     hours: 80,
@@ -388,6 +436,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-emergencies",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Emergency Response",
     hours: 70,
@@ -401,6 +450,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-shipping-biz",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Shipping Business Management",
     hours: 80,
@@ -414,6 +464,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-colregs",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Collision Prevention Regulations",
     hours: 80,
@@ -427,6 +478,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-meteorology",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Meteorology",
     hours: 80,
@@ -440,6 +492,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-law",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Maritime Law & Conventions",
     hours: 70,
@@ -453,6 +506,7 @@ export const units: Unit[] = [
   },
   {
     id: "l6-stability",
+    courseId: "nautical-science",
     levelId: "level6",
     title: "Ship Stability Principles",
     hours: 90,
@@ -480,8 +534,8 @@ export const assumptions = [
     decision: "Only the college admin. Lecturers teach and study; they do not enrol people.",
   },
   {
-    question: "What is the course?",
-    decision: "Nautical Science, with KNQF Level 5 and Level 6 pathways. Units are studied in the app. Videos come later.",
+    question: "What courses are in the catalogue?",
+    decision: "Nautical Science is open (Level 5 and Level 6). Marine Engineering and Port Operations are listed as coming next. More courses can be added the same way.",
   },
   {
     question: "Where did the unit outlines come from?",
@@ -509,14 +563,26 @@ export function initialDb(): Db {
   };
 }
 
+export function findCourse(id: string): Course | undefined {
+  return courses.find((course) => course.id === id);
+}
+
 export function findUnit(id: string): Unit | undefined {
   return units.find((unit) => unit.id === id);
 }
 
-export function findLevel(id: LevelId): Level | undefined {
-  return levels.find((level) => level.id === id);
+export function findLevel(courseId: CourseId, levelId: LevelId): Level | undefined {
+  return levels.find((level) => level.courseId === courseId && level.id === levelId);
 }
 
-export function unitsForLevel(levelId: LevelId): Unit[] {
-  return units.filter((unit) => unit.levelId === levelId);
+export function levelsForCourse(courseId: CourseId): Level[] {
+  return levels.filter((level) => level.courseId === courseId);
+}
+
+export function unitsForLevel(courseId: CourseId, levelId: LevelId): Unit[] {
+  return units.filter((unit) => unit.courseId === courseId && unit.levelId === levelId);
+}
+
+export function unitsForCourse(courseId: CourseId): Unit[] {
+  return units.filter((unit) => unit.courseId === courseId);
 }

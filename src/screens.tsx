@@ -2,13 +2,16 @@ import { FormEvent, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   assumptions,
-  course,
+  courses,
+  findCourse,
   findLevel,
   findUnit,
   lecturerLimit,
-  levels,
+  levelsForCourse,
   studentLimit,
+  unitsForCourse,
   unitsForLevel,
+  type CourseId,
   type LevelId,
 } from "./sample";
 import { useStore } from "./store";
@@ -42,25 +45,25 @@ export function Landing() {
           </div>
         </section>
         <div className="hero-bands">
-          {levels.map((level) => (
-            <article key={level.id} className="hero-band">
-              <p className="kicker light">{level.knqf}</p>
-              <h2>{level.outcome}</h2>
-              <p>{level.blurb}</p>
+          {courses.map((item) => (
+            <article key={item.id} className="hero-band">
+              <p className="kicker light">{item.status === "open" ? "Open now" : "Coming next"}</p>
+              <h2>{item.title}</h2>
+              <p>{item.summary}</p>
             </article>
           ))}
         </div>
       </div>
 
       <section className="alive-strip">
-        <p className="alive-quote">Your college should not have to assemble a syllabus from scraps. The course is ready. Your people teach and learn from it.</p>
+        <p className="alive-quote">Your college should not have to assemble a syllabus from scraps. The courses are ready. Your people teach and learn from them.</p>
       </section>
 
       <section className="points">
         <article className="point">
           <span className="point-num">01</span>
           <h2>Lecturers</h2>
-          <p>Curated Nautical Science units they can teach from — Level 5 for ratings, Level 6 for officers of the watch.</p>
+          <p>Curated maritime courses they can teach from — Nautical Science first, with more programmes to follow.</p>
         </article>
         <article className="point">
           <span className="point-num">02</span>
@@ -70,7 +73,7 @@ export function Landing() {
         <article className="point">
           <span className="point-num">03</span>
           <h2>The institution</h2>
-          <p>Stop worrying about curriculum. Enrol your people, and run the course on your own network.</p>
+          <p>Stop worrying about curriculum. Enrol your people, and run the courses on your own network.</p>
         </article>
       </section>
     </div>
@@ -147,41 +150,54 @@ export function Login() {
 
 export function SectionNav() {
   const location = useLocation();
-  const unitId = location.pathname.startsWith("/materials/") ? location.pathname.slice("/materials/".length) : "";
-  const current = findUnit(unitId);
-  const [open, setOpen] = useState<Record<LevelId, boolean>>({
-    level5: current?.levelId === "level5",
-    level6: !current || current.levelId === "level6",
-  });
+  const parts = location.pathname.split("/").filter(Boolean);
+  const courseId = parts[0] === "materials" ? parts[1] : undefined;
+  const unitId = parts[0] === "materials" && parts.length >= 3 ? parts[2] : undefined;
+  const currentUnit = unitId ? findUnit(unitId) : undefined;
+  const [openCourse, setOpenCourse] = useState<CourseId | null>(
+    (currentUnit?.courseId ?? (courseId as CourseId) ?? "nautical-science") as CourseId,
+  );
 
   return (
     <div className="sections">
-      <p className="side-course">{course.title}</p>
-      {levels.map((level) => {
-        const items = unitsForLevel(level.id);
-        const expanded = open[level.id];
+      <p className="side-course">Courses</p>
+      {courses.map((item) => {
+        const expanded = openCourse === item.id;
+        const courseUnits = unitsForCourse(item.id);
         return (
-          <div key={level.id}>
-            <button
-              type="button"
-              className="section-toggle"
-              aria-expanded={expanded}
-              onClick={() => setOpen((state) => ({ ...state, [level.id]: !state[level.id] }))}
-            >
-              {level.title}
-              <span aria-hidden="true">{expanded ? "▾" : "▸"}</span>
-            </button>
-            {expanded && (
-              <div className="section-items">
-                {items.map((unit) => (
-                  <NavLink
-                    key={unit.id}
-                    to={`/materials/${unit.id}`}
-                    className={({ isActive }) => (isActive ? "active" : undefined)}
-                  >
-                    {unit.title}
-                  </NavLink>
-                ))}
+          <div key={item.id}>
+            {item.status === "open" ? (
+              <>
+                <button
+                  type="button"
+                  className="section-toggle"
+                  aria-expanded={expanded}
+                  onClick={() => setOpenCourse(expanded ? null : item.id)}
+                >
+                  {item.title}
+                  <span aria-hidden="true">{expanded ? "▾" : "▸"}</span>
+                </button>
+                {expanded && (
+                  <div className="section-items">
+                    <NavLink to={`/materials/${item.id}`} end className={({ isActive }) => (isActive && !unitId ? "active" : undefined)}>
+                      Course home
+                    </NavLink>
+                    {courseUnits.map((unit) => (
+                      <NavLink
+                        key={unit.id}
+                        to={`/materials/${item.id}/${unit.id}`}
+                        className={({ isActive }) => (isActive ? "active" : undefined)}
+                      >
+                        {unit.title}
+                      </NavLink>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="section-toggle muted-toggle">
+                {item.title}
+                <span>Soon</span>
               </div>
             )}
           </div>
@@ -191,8 +207,8 @@ export function SectionNav() {
   );
 }
 
-function UnitGrid({ levelId }: { levelId: LevelId }) {
-  const level = findLevel(levelId);
+function UnitGrid({ courseId, levelId }: { courseId: CourseId; levelId: LevelId }) {
+  const level = findLevel(courseId, levelId);
   if (!level) return null;
   return (
     <section className="level-block">
@@ -205,8 +221,8 @@ function UnitGrid({ levelId }: { levelId: LevelId }) {
         <p className="level-meta">{level.hours} hrs · {level.code}</p>
       </div>
       <div className="unit-grid">
-        {unitsForLevel(levelId).map((unit) => (
-          <Link key={unit.id} className="unit-card" to={`/materials/${unit.id}`}>
+        {unitsForLevel(courseId, levelId).map((unit) => (
+          <Link key={unit.id} className="unit-card" to={`/materials/${courseId}/${unit.id}`}>
             <span className="chip">{unit.lessons?.length ? "Ready to study" : unit.tag}</span>
             <h3>{unit.title}</h3>
             <p>{unit.description}</p>
@@ -223,38 +239,92 @@ export function Materials() {
   const firstName = current?.name.split(" ")[0] ?? "";
   const roleLine =
     session?.role === "admin"
-      ? "College view of the Nautical Science course your lecturers and students use."
+      ? "The courses available to your college. Nautical Science is open; more programmes follow."
       : session?.role === "lecturer"
-        ? `${firstName}, open a unit to see the teaching notes and the reading your students get.`
-        : `${firstName}, open a unit and work through the reading. Start with Watchkeeping Duties or Navigation Principles.`;
+        ? `${firstName}, pick a course. Open Nautical Science to teach and review units.`
+        : `${firstName}, pick a course to study. Start with Nautical Science.`;
 
   return (
     <main>
       <header className="page-head course-head">
-        <p className="kicker">Course</p>
-        <h1>{course.title}</h1>
+        <p className="kicker">Catalogue</p>
+        <h1>Courses</h1>
         <p className="sub">{roleLine}</p>
       </header>
-      <UnitGrid levelId="level6" />
-      <UnitGrid levelId="level5" />
+      <div className="course-grid">
+        {courses.map((item) => (
+          item.status === "open" ? (
+            <Link key={item.id} className="course-card" to={`/materials/${item.id}`}>
+              <span className="chip">Open</span>
+              <h2>{item.title}</h2>
+              <p>{item.summary}</p>
+            </Link>
+          ) : (
+            <div key={item.id} className="course-card soon">
+              <span className="chip wait">Coming next</span>
+              <h2>{item.title}</h2>
+              <p>{item.summary}</p>
+            </div>
+          )
+        ))}
+      </div>
+    </main>
+  );
+}
+
+export function CoursePage() {
+  const { courseId } = useParams();
+  const course = findCourse(courseId ?? "");
+  if (!course) return <p>That course is not in the catalogue.</p>;
+  if (course.status !== "open") {
+    return (
+      <main>
+        <p className="note-line"><Link className="back" to="/materials">Courses</Link></p>
+        <h1>{course.title}</h1>
+        <p className="sub">This course is listed for the college and will open when its units are ready.</p>
+      </main>
+    );
+  }
+
+  const courseLevels = levelsForCourse(course.id);
+  return (
+    <main>
+      <p className="note-line"><Link className="back" to="/materials">Courses</Link></p>
+      <header className="page-head course-head">
+        <p className="kicker">Course</p>
+        <h1>{course.title}</h1>
+        <p className="sub">{course.summary}</p>
+      </header>
+      {courseLevels.map((level) => (
+        <UnitGrid key={level.id} courseId={course.id} levelId={level.id} />
+      ))}
     </main>
   );
 }
 
 export function ResourcePage() {
-  const { resourceId } = useParams();
+  const { courseId, unitId } = useParams();
   const { session } = useStore();
-  const unit = findUnit(resourceId ?? "");
-  const level = unit ? findLevel(unit.levelId) : undefined;
+  const course = findCourse(courseId ?? "");
+  const unit = findUnit(unitId ?? "");
+  const level = unit && course ? findLevel(unit.courseId, unit.levelId) : undefined;
   const [done, setDone] = useState(false);
-  if (!unit || !level) return <p>That unit is not in this course.</p>;
+  if (!course || !unit || !level || unit.courseId !== course.id) {
+    return <p>That unit is not in this course.</p>;
+  }
 
   const isLecturer = session?.role === "lecturer" || session?.role === "admin";
   const hasLessons = Boolean(unit.lessons?.length);
 
   return (
     <main className="unit-page">
-      <p className="note-line"><Link className="back" to="/materials">{course.title}</Link> · {level.title}</p>
+      <p className="note-line">
+        <Link className="back" to="/materials">Courses</Link>
+        {" · "}
+        <Link className="back" to={`/materials/${course.id}`}>{course.title}</Link>
+        {" · "}
+        {level.title}
+      </p>
       <div className="role-pill">{isLecturer ? "Lecturer view" : "Student view"}</div>
       <p className="kicker">{unit.tag} unit · {unit.hours} hours</p>
       <h1>{unit.title}</h1>
