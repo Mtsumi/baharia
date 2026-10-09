@@ -10,33 +10,44 @@ function initials(name: string): string {
 export function Landing() {
   return (
     <div className="public">
-      <header className="public-bar">
-        <div className="brand">
-          <strong>Bahari</strong>
-          <small>Maritime Academy</small>
-        </div>
-        <Link className="btn" to="/login">Log in</Link>
-      </header>
-      <section className="hero">
-        <p className="kicker">For maritime colleges and training centres</p>
-        <h1>Maritime resources and upskilling, to an international standard.</h1>
-        <p className="sub">A college gives its lecturers curated maritime material, and gives its students access to the same resources.</p>
-        <div style={{ marginTop: 22 }}>
-          <Link className="btn" to="/login">Log in</Link>
-        </div>
-      </section>
+      <div className="sea">
+        <header className="public-bar">
+          <div className="brand">
+            <strong>Bahari</strong>
+            <small>Maritime Academy</small>
+          </div>
+          <div className="bar-actions">
+            <a className="btn ghost-light" href="mailto:hello@baharimaritime.com?subject=Bahari%20resource%20centre">Book a call</a>
+            <Link className="btn solid-light" to="/login">Log in</Link>
+          </div>
+        </header>
+        <section className="hero">
+          <p className="kicker light">For maritime colleges and training centres</p>
+          <h1>Maritime resources and upskilling, to an international standard.</h1>
+          <p className="sub light">
+            Give your lecturers industry-curated material, and put the same resources in front of your students.
+          </p>
+          <div className="hero-actions">
+            <a className="btn solid-light" href="mailto:hello@baharimaritime.com?subject=Bahari%20resource%20centre">Book a call</a>
+          </div>
+        </section>
+      </div>
+
       <section className="points">
         <article className="point">
+          <span className="point-num">01</span>
           <h2>Lecturers</h2>
-          <p>They get maritime material curated for the industry, and teach from it. Officer of the Watch is one course. Short courses are there too.</p>
+          <p>Industry-curated material they can teach from. Courses from COLREGs and navigation through to GMDSS and emergency response.</p>
         </article>
         <article className="point">
+          <span className="point-num">02</span>
           <h2>Students</h2>
-          <p>The college adds them. They study the same material their lecturers use, in class and on their own.</p>
+          <p>Give your students top-tier material to an international standard — the same resources their lecturers use.</p>
         </article>
         <article className="point">
+          <span className="point-num">03</span>
           <h2>The institution</h2>
-          <p>The college admin adds lecturers. Lecturers add students. There is a cap on each.</p>
+          <p>Stop chasing curriculum from abroad. Run the resources on your own network, for the people you enrol.</p>
         </article>
       </section>
     </div>
@@ -75,20 +86,19 @@ export function Login() {
   return (
     <div className="gate">
       <section className="gate-brand">
-        <div>
-          <div className="brand">
-            <strong style={{ color: "white" }}>Bahari</strong>
-            <small>Maritime Academy</small>
-          </div>
-          <h1>Maritime resources and upskilling for your college.</h1>
-          <p>The college admin adds lecturers. Lecturers add students. There is no public signup.</p>
+        <Link className="brand" to="/">
+          <strong style={{ color: "white" }}>Bahari</strong>
+          <small>Maritime Academy</small>
+        </Link>
+        <div className="gate-mark" aria-hidden="true">
+          <span />
+          <span />
+          <span />
         </div>
-        <p>Officer of the Watch is one course.</p>
       </section>
       <section className="gate-panel">
         <h2>Log in</h2>
-        <p className="sub">Use the email your college gave you.</p>
-        <form className="form-card" onSubmit={submit} style={{ marginTop: 18 }}>
+        <form className="form-card" onSubmit={submit}>
           <label>
             Email
             <input value={email} onChange={(event) => setEmail(event.target.value)} type="email" placeholder="name@example.com" required />
@@ -102,7 +112,7 @@ export function Login() {
               <span className="avatar">{initials(person.name)}</span>
               <span>
                 {person.name}
-                <small>{person.role} · {person.email}</small>
+                <small>{person.role}</small>
               </span>
             </button>
           ))}
