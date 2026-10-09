@@ -1,5 +1,5 @@
 import { Link, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { Assumptions, Landing, Login, Materials, People, ResourcePage, SectionNav, Students } from "./screens";
+import { Assumptions, Landing, Login, Materials, People, ResourcePage, SectionNav } from "./screens";
 import { useStore } from "./store";
 
 let leaving = false;
@@ -25,9 +25,6 @@ function Shell({ children }: { children: React.ReactNode }) {
         <nav>
           {session.role === "admin" && (
             <NavLink to="/people" className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}>People</NavLink>
-          )}
-          {session.role === "lecturer" && (
-            <NavLink to="/students" className={({ isActive }) => `nav-link${isActive ? " active" : ""}`}>Students</NavLink>
           )}
         </nav>
         <div className="side-foot">
@@ -74,13 +71,6 @@ function RequireAdmin({ children }: { children: React.ReactNode }) {
   return children;
 }
 
-function RequireLecturer({ children }: { children: React.ReactNode }) {
-  const { session } = useStore();
-  if (!session) return null;
-  if (session.role !== "lecturer") return <Navigate to="/materials" replace />;
-  return children;
-}
-
 export function App() {
   return (
     <Shell>
@@ -91,7 +81,6 @@ export function App() {
         <Route path="/materials" element={<RequireAuth><Materials /></RequireAuth>} />
         <Route path="/materials/:resourceId" element={<RequireAuth><ResourcePage /></RequireAuth>} />
         <Route path="/people" element={<RequireAuth><RequireAdmin><People /></RequireAdmin></RequireAuth>} />
-        <Route path="/students" element={<RequireAuth><RequireLecturer><Students /></RequireLecturer></RequireAuth>} />
         <Route path="*" element={<p>That page is not in this version.</p>} />
       </Routes>
     </Shell>

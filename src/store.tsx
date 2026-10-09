@@ -106,8 +106,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return { ok: true };
       },
       addStudent: (name, email) => {
-        if (session?.role !== "admin" && session?.role !== "lecturer") {
-          return { ok: false, message: "Only the college admin or a lecturer can add students." };
+        if (session?.role !== "admin") {
+          return { ok: false, message: "Only the college admin can add students." };
         }
         if (!name.trim() || !email.trim()) return { ok: false, message: "Enter a name and an email." };
         if (taken(email)) return { ok: false, message: "That email is already on this centre." };

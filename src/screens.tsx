@@ -1,6 +1,16 @@
 import { FormEvent, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import { assumptions, findProgramme, findResource, lecturerLimit, programmes, resources, sections, studentLimit } from "./sample";
+import {
+  assumptions,
+  course,
+  findLevel,
+  findUnit,
+  lecturerLimit,
+  levels,
+  studentLimit,
+  unitsForLevel,
+  type LevelId,
+} from "./sample";
 import { useStore } from "./store";
 
 function initials(name: string): string {
@@ -31,23 +41,36 @@ export function Landing() {
             <a className="btn solid-light" href="mailto:hello@baharimaritime.com?subject=Bahari%20resource%20centre">Book a call</a>
           </div>
         </section>
+        <div className="hero-bands">
+          {levels.map((level) => (
+            <article key={level.id} className="hero-band">
+              <p className="kicker light">{level.knqf}</p>
+              <h2>{level.outcome}</h2>
+              <p>{level.blurb}</p>
+            </article>
+          ))}
+        </div>
       </div>
+
+      <section className="alive-strip">
+        <p className="alive-quote">Your college should not have to assemble a syllabus from scraps. The course is ready. Your people teach and learn from it.</p>
+      </section>
 
       <section className="points">
         <article className="point">
           <span className="point-num">01</span>
           <h2>Lecturers</h2>
-          <p>Industry-curated pathways they can teach from — KNQF Level 5 and Level 6 Nautical Science, plus short courses for CPD.</p>
+          <p>Curated Nautical Science units they can teach from — Level 5 for ratings, Level 6 for officers of the watch.</p>
         </article>
         <article className="point">
           <span className="point-num">02</span>
           <h2>Students</h2>
-          <p>Give your students top-tier material to an international standard — the same programmes their lecturers use.</p>
+          <p>Top-tier material to an international standard, studied in the centre — not chased as downloads.</p>
         </article>
         <article className="point">
           <span className="point-num">03</span>
           <h2>The institution</h2>
-          <p>Stop chasing curriculum from abroad. Run the programmes on your own network, for the people you enrol.</p>
+          <p>Stop worrying about curriculum. Enrol your people, and run the course on your own network.</p>
         </article>
       </section>
     </div>
@@ -124,40 +147,39 @@ export function Login() {
 
 export function SectionNav() {
   const location = useLocation();
-  const currentId = location.pathname.startsWith("/materials/") ? location.pathname.slice("/materials/".length) : "";
-  const current = findResource(currentId);
-  const [open, setOpen] = useState<Record<string, boolean>>({
-    knqf5: current?.section === "knqf5",
-    knqf6: !current || current.section === "knqf6",
-    short: current?.section === "short",
+  const unitId = location.pathname.startsWith("/materials/") ? location.pathname.slice("/materials/".length) : "";
+  const current = findUnit(unitId);
+  const [open, setOpen] = useState<Record<LevelId, boolean>>({
+    level5: current?.levelId === "level5",
+    level6: !current || current.levelId === "level6",
   });
 
   return (
     <div className="sections">
-      {sections.map((section) => {
-        const programme = findProgramme(section.id);
-        const items = resources.filter((resource) => resource.section === section.id);
-        const expanded = open[section.id];
+      <p className="side-course">{course.title}</p>
+      {levels.map((level) => {
+        const items = unitsForLevel(level.id);
+        const expanded = open[level.id];
         return (
-          <div key={section.id}>
+          <div key={level.id}>
             <button
               type="button"
               className="section-toggle"
               aria-expanded={expanded}
-              onClick={() => setOpen((state) => ({ ...state, [section.id]: !state[section.id] }))}
+              onClick={() => setOpen((state) => ({ ...state, [level.id]: !state[level.id] }))}
             >
-              {programme?.shortTitle ?? section.title}
+              {level.title}
               <span aria-hidden="true">{expanded ? "▾" : "▸"}</span>
             </button>
             {expanded && (
               <div className="section-items">
-                {items.map((resource) => (
+                {items.map((unit) => (
                   <NavLink
-                    key={resource.id}
-                    to={`/materials/${resource.id}`}
+                    key={unit.id}
+                    to={`/materials/${unit.id}`}
                     className={({ isActive }) => (isActive ? "active" : undefined)}
                   >
-                    {resource.title}
+                    {unit.title}
                   </NavLink>
                 ))}
               </div>
@@ -169,54 +191,76 @@ export function SectionNav() {
   );
 }
 
+function UnitGrid({ levelId }: { levelId: LevelId }) {
+  const level = findLevel(levelId);
+  if (!level) return null;
+  return (
+    <section className="level-block">
+      <div className="level-head">
+        <div>
+          <p className="kicker">{level.knqf}</p>
+          <h2>{level.outcome}</h2>
+          <p className="sub">{level.blurb}</p>
+        </div>
+        <p className="level-meta">{level.hours} hrs · {level.code}</p>
+      </div>
+      <div className="unit-grid">
+        {unitsForLevel(levelId).map((unit) => (
+          <Link key={unit.id} className="unit-card" to={`/materials/${unit.id}`}>
+            <span className="chip">{unit.tag}</span>
+            <h3>{unit.title}</h3>
+            <p>{unit.description}</p>
+            <span className="unit-hours">{unit.hours} hours</span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function Materials() {
   return (
     <main>
-      <header className="page-head">
-        <p className="kicker">Programmes</p>
-        <h1>Choose a pathway</h1>
-        <p className="sub">KNQF programmes for the college, plus short courses. Open a section on the left, or start from a programme below.</p>
+      <header className="page-head course-head">
+        <p className="kicker">Course</p>
+        <h1>{course.title}</h1>
+        <p className="sub">{course.summary}</p>
       </header>
-      <div className="pathway-list">
-        {programmes.map((programme) => {
-          const start = resources.find((resource) => resource.section === programme.id);
-          return (
-            <Link key={programme.id} className="pathway" to={start ? `/materials/${start.id}` : "/materials"}>
-              <span className="kicker">{programme.shortTitle}</span>
-              <h2>{programme.title}</h2>
-              <p>{programme.outcome}</p>
-              {programme.hours > 0 && <p className="pathway-meta">{programme.hours} notional hours · {programme.code}</p>}
-            </Link>
-          );
-        })}
-      </div>
+      <UnitGrid levelId="level6" />
+      <UnitGrid levelId="level5" />
     </main>
   );
 }
 
 export function ResourcePage() {
   const { resourceId } = useParams();
-  const resource = findResource(resourceId ?? "");
-  const programme = resource ? findProgramme(resource.section) : undefined;
-  if (!resource || !programme) return <p>That subject is not in this centre.</p>;
+  const unit = findUnit(resourceId ?? "");
+  const level = unit ? findLevel(unit.levelId) : undefined;
+  if (!unit || !level) return <p>That unit is not in this course.</p>;
+
   return (
-    <main className="reading">
-      <p className="kicker">{programme.title}</p>
-      <h1>{resource.title}</h1>
-      <p className="moment">{resource.moment}</p>
-      {resource.hours ? <p className="pathway-meta">{resource.hours} notional hours</p> : null}
-      {resource.body ? <p className="sub">{resource.body}</p> : <p className="sub">{resource.summary} Unit reading not added yet — use the curriculum PDF for outcomes and assessment.</p>}
-      {resource.pdfUrl && (
-        <div className="pdf-actions">
-          <a className="btn" href={resource.pdfUrl} target="_blank" rel="noreferrer">Open curriculum PDF</a>
-          <p className="note-line">{programme.source}</p>
-        </div>
-      )}
-      {!resource.pdfUrl && programme.pdfUrl && resource.kind === "unit" && (
-        <div className="pdf-actions">
-          <a className="btn ghost" href={programme.pdfUrl} target="_blank" rel="noreferrer">Open full {programme.shortTitle} PDF</a>
-        </div>
-      )}
+    <main className="unit-page">
+      <p className="note-line"><Link className="back" to="/materials">{course.title}</Link> · {level.title}</p>
+      <p className="kicker">{unit.tag} unit · {unit.hours} hours</p>
+      <h1>{unit.title}</h1>
+      <p className="lede">{unit.description}</p>
+
+      <section className="study-panel">
+        <h2>What you will be able to do</h2>
+        <ol className="outcomes">
+          {unit.outcomes.map((outcome) => (
+            <li key={outcome}>{outcome}</li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="study-panel soft">
+        <h2>Study this unit</h2>
+        <p>
+          Work through the outcomes above with your lecturer. Video lessons and practice questions will sit here later.
+          For now, this is the unit outline you teach and study from inside the centre.
+        </p>
+      </section>
     </main>
   );
 }
@@ -228,23 +272,9 @@ export function People() {
       <header className="page-head">
         <p className="kicker">College admin</p>
         <h1>People</h1>
-        <p className="sub">Add lecturers and students. Lecturers can add students on their own; they cannot add lecturers.</p>
+        <p className="sub">Add lecturers and students. Lecturers use the course; they do not enrol people.</p>
       </header>
       <AccountList title="Lecturers" noun="lecturer" used={db.lecturers.length} limit={lecturerLimit} people={db.lecturers} onAdd={addLecturer} />
-      <AccountList title="Students" noun="student" used={db.students.length} limit={studentLimit} people={db.students} onAdd={addStudent} />
-    </main>
-  );
-}
-
-export function Students() {
-  const { db, addStudent } = useStore();
-  return (
-    <main>
-      <header className="page-head">
-        <p className="kicker">Lecturer</p>
-        <h1>Students</h1>
-        <p className="sub">Add the students who should read the materials. New lecturers are added by the college admin.</p>
-      </header>
       <AccountList title="Students" noun="student" used={db.students.length} limit={studentLimit} people={db.students} onAdd={addStudent} />
     </main>
   );

@@ -10,67 +10,407 @@ export type Person = {
   email: string;
 };
 
-export type SectionId = "knqf5" | "knqf6" | "short";
+export type LevelId = "level5" | "level6";
 
-export type Resource = {
-  id: string;
+export type Level = {
+  id: LevelId;
   title: string;
-  summary: string;
-  moment: string;
-  section: SectionId;
-  kind: "unit" | "programme";
-  hours?: number;
-  body: string | null;
-  pdfUrl?: string;
-};
-
-export type Programme = {
-  id: SectionId;
-  title: string;
-  shortTitle: string;
-  outcome: string;
+  knqf: string;
   code: string;
+  outcome: string;
   hours: number;
-  pdfUrl?: string;
-  source: string;
+  blurb: string;
 };
 
-export const programmes: Programme[] = [
+export type Unit = {
+  id: string;
+  levelId: LevelId;
+  title: string;
+  hours: number;
+  tag: string;
+  description: string;
+  outcomes: string[];
+};
+
+export const course = {
+  title: "Nautical Science",
+  summary: "Competency-based programmes for deck ratings and officers of the watch.",
+};
+
+export const levels: Level[] = [
   {
-    id: "knqf5",
-    shortTitle: "Level 5",
-    title: "Nautical Science · KNQF Level 5",
-    outcome: "Able Seafarer Deck pathway (STCW Reg II/5).",
+    id: "level5",
+    title: "Level 5",
+    knqf: "KNQF Level 5",
     code: "1041 454 A",
+    outcome: "Able Seafarer Deck pathway",
     hours: 1780,
-    pdfUrl: "/curricula/nautical-science-knqf-level-5.pdf",
-    source: "Bandari Maritime Academy competency-based curriculum, 2024.",
+    blurb: "For ratings working toward Able Seafarer Deck (STCW Reg II/5).",
   },
   {
-    id: "knqf6",
-    shortTitle: "Level 6",
-    title: "Nautical Science Technology · KNQF Level 6",
-    outcome: "Officer in Charge of a Navigational Watch pathway (STCW Reg II/1).",
+    id: "level6",
+    title: "Level 6",
+    knqf: "KNQF Level 6",
     code: "1041 554 A",
+    outcome: "Officer of the Watch pathway",
     hours: 2800,
-    pdfUrl: "/curricula/nautical-science-knqf-level-6.pdf",
-    source: "Bandari Maritime Academy competency-based curriculum, 2024.",
-  },
-  {
-    id: "short",
-    shortTitle: "Short courses",
-    title: "Short courses & CPD",
-    outcome: "Targeted upskilling beside the full KNQF programmes.",
-    code: "CPD",
-    hours: 0,
-    source: "Sample short-course shelf for the demo.",
+    blurb: "For officers training toward STCW Reg II/1 — Officer in Charge of a Navigational Watch.",
   },
 ];
 
-export const sections = programmes.map((programme) => ({
-  id: programme.id,
-  title: programme.shortTitle === "Short courses" ? programme.shortTitle : programme.title,
-}));
+export const units: Unit[] = [
+  {
+    id: "l5-seamanship",
+    levelId: "level5",
+    title: "Seamanship Practices",
+    hours: 80,
+    tag: "Core",
+    description: "Deck seamanship for Able Seafarer ratings: ropes, knots, shipboard work and safe practice on deck.",
+    outcomes: [
+      "Carry out seamanship tasks on deck under instruction",
+      "Handle ropes, wires and deck fittings safely",
+      "Support routine shipboard maintenance",
+    ],
+  },
+  {
+    id: "l5-watchkeeping",
+    levelId: "level5",
+    title: "Watchkeeping Practices",
+    hours: 80,
+    tag: "Core",
+    description: "Safe watchkeeping as a deck rating: lookout, reporting and supporting the officer of the watch.",
+    outcomes: [
+      "Keep an effective lookout",
+      "Report traffic, lights and hazards clearly",
+      "Support a safe navigational watch",
+    ],
+  },
+  {
+    id: "l5-deck-machinery",
+    levelId: "level5",
+    title: "Deck Machinery & Cargo Gear",
+    hours: 70,
+    tag: "Core",
+    description: "Safe operation and care of deck machinery, cargo handling gear and related equipment.",
+    outcomes: [
+      "Identify deck machinery and cargo gear",
+      "Operate equipment under supervision",
+      "Follow safe working practices around moving gear",
+    ],
+  },
+  {
+    id: "l5-mooring",
+    levelId: "level5",
+    title: "Berthing, Anchoring & Mooring",
+    hours: 70,
+    tag: "Core",
+    description: "Mooring, berthing and anchoring work as part of the deck team.",
+    outcomes: [
+      "Prepare and handle mooring lines",
+      "Support anchoring operations",
+      "Work safely during berthing",
+    ],
+  },
+  {
+    id: "l5-cargo",
+    levelId: "level5",
+    title: "Cargo Handling & Stowage",
+    hours: 80,
+    tag: "Core",
+    description: "Cargo handling and stowage duties for deck ratings.",
+    outcomes: [
+      "Support cargo operations on deck",
+      "Follow stowage and securing instructions",
+      "Recognise common cargo hazards",
+    ],
+  },
+  {
+    id: "l5-ship-handling",
+    levelId: "level5",
+    title: "Ship Handling & Manoeuvring",
+    hours: 70,
+    tag: "Core",
+    description: "How ratings support ship handling and manoeuvring alongside and at sea.",
+    outcomes: [
+      "Understand stations during manoeuvres",
+      "Support helm and lookout duties as required",
+      "Work safely during arrival and departure",
+    ],
+  },
+  {
+    id: "l5-emergencies",
+    levelId: "level5",
+    title: "Emergencies at Sea and in Port",
+    hours: 60,
+    tag: "Core",
+    description: "Responding to emergencies on board and in port as a deck rating.",
+    outcomes: [
+      "Follow emergency stations and alarms",
+      "Support fire, abandon-ship and rescue drills",
+      "Act under the officer in charge during an emergency",
+    ],
+  },
+  {
+    id: "l5-chartwork",
+    levelId: "level5",
+    title: "Basic Chartwork Practices",
+    hours: 80,
+    tag: "Core",
+    description: "Introductory chartwork for ratings continuing toward higher nautical study.",
+    outcomes: [
+      "Read basic chart symbols and scales",
+      "Plot simple positions under guidance",
+      "Use charts as a support to the watch",
+    ],
+  },
+  {
+    id: "l5-stability",
+    levelId: "level5",
+    title: "Ship Stability Principles",
+    hours: 80,
+    tag: "Common",
+    description: "Foundations of ship stability for deck ratings.",
+    outcomes: [
+      "Explain basic stability terms",
+      "Recognise how loading affects the ship",
+      "Report conditions that affect seaworthiness",
+    ],
+  },
+  {
+    id: "l5-stcw-safety",
+    levelId: "level5",
+    title: "Basic Sea Safety (STCW)",
+    hours: 50,
+    tag: "Common",
+    description: "STCW basic safety training required before and during sea service.",
+    outcomes: [
+      "Apply personal survival techniques",
+      "Support fire prevention and firefighting",
+      "Follow elementary first aid and personal safety practices",
+    ],
+  },
+
+  {
+    id: "l6-seamanship",
+    levelId: "level6",
+    title: "Seamanship Practices",
+    hours: 100,
+    tag: "Core",
+    description: "Seamanship at officer level: planning and supervising deck work, not only carrying it out.",
+    outcomes: [
+      "Plan and supervise seamanship tasks",
+      "Apply safe working practices on deck",
+      "Lead ratings during routine and special operations",
+    ],
+  },
+  {
+    id: "l6-navigation",
+    levelId: "level6",
+    title: "Navigation Principles",
+    hours: 120,
+    tag: "Core",
+    description:
+      "Competencies required to apply navigation principles: Earth features, charts and publications, compass errors, sailing methods, position fixing, tides and great-circle sailing.",
+    outcomes: [
+      "Identify Earth features for navigation",
+      "Identify charts and nautical publications",
+      "Correct compass errors",
+      "Apply parallel, plane and Mercator sailing",
+      "Apply principles of position fixing",
+      "Apply tidal and great-circle sailing principles",
+    ],
+  },
+  {
+    id: "l6-chartwork",
+    levelId: "level6",
+    title: "Chartwork Practices",
+    hours: 90,
+    tag: "Core",
+    description: "Chartwork for the officer of the watch: plotting, courses, dangers and coastal navigation practice.",
+    outcomes: [
+      "Plot courses and positions on the chart",
+      "Allow for set, drift and compass error",
+      "Identify coastal dangers and clearing marks",
+    ],
+  },
+  {
+    id: "l6-celestial",
+    levelId: "level6",
+    title: "Celestial Navigation",
+    hours: 100,
+    tag: "Core",
+    description: "Celestial navigation for ocean passages when electronic systems are not the only source of position.",
+    outcomes: [
+      "Take and reduce celestial sights",
+      "Obtain a celestial fix",
+      "Use celestial methods to check the compass",
+    ],
+  },
+  {
+    id: "l6-bridge",
+    levelId: "level6",
+    title: "Bridge Equipment & Systems",
+    hours: 80,
+    tag: "Core",
+    description: "Bridge systems the officer of the watch must understand and operate.",
+    outcomes: [
+      "Identify bridge equipment and its purpose",
+      "Operate bridge systems for a safe watch",
+      "Recognise faults and report them correctly",
+    ],
+  },
+  {
+    id: "l6-electronic-nav",
+    levelId: "level6",
+    title: "Electronic Navigation Equipment",
+    hours: 80,
+    tag: "Core",
+    description: "Radar, ECDIS and related electronic aids used on the navigational watch.",
+    outcomes: [
+      "Set up and interpret radar information",
+      "Use ECDIS for monitoring the passage",
+      "Cross-check electronic positions with other methods",
+    ],
+  },
+  {
+    id: "l6-cargo",
+    levelId: "level6",
+    title: "Cargo Handling & Stowage",
+    hours: 90,
+    tag: "Core",
+    description: "Managing cargo operations as a junior officer, including stowage, securing and documentation.",
+    outcomes: [
+      "Plan and monitor cargo operations",
+      "Apply stowage and securing principles",
+      "Maintain cargo records and communications",
+    ],
+  },
+  {
+    id: "l6-watchkeeping",
+    levelId: "level6",
+    title: "Watchkeeping Duties",
+    hours: 150,
+    tag: "Core",
+    description:
+      "Perform watchkeeping duties: taking and handing over the watch, anchorage and port watches, lookout, vessels in any visibility, distress signals, coastal waters, lights, shapes and sound signals, and procedures with a pilot on board.",
+    outcomes: [
+      "Execute watch taking and handing over",
+      "Perform watchkeeping at anchorage and in port",
+      "Utilise meteorological information for a safe watch",
+      "Perform lookout duties and conduct the vessel in any visibility",
+      "Transmit distress signals when required",
+      "Keep watch in coastal and congested waters",
+      "Recognise lights, shapes and sound signals",
+      "Implement navigational watch procedures with a pilot on board",
+    ],
+  },
+  {
+    id: "l6-voyage",
+    levelId: "level6",
+    title: "Voyage Planning & Ocean Passage",
+    hours: 100,
+    tag: "Core",
+    description:
+      "Plan and execute the passage: appraisal, planning, execution and monitoring from berth to berth, including ocean passages.",
+    outcomes: [
+      "Appraise the passage using charts and publications",
+      "Prepare a berth-to-berth voyage plan",
+      "Monitor the plan and revise it when conditions change",
+      "Know when to call the master",
+    ],
+  },
+  {
+    id: "l6-ship-handling",
+    levelId: "level6",
+    title: "Ship Handling",
+    hours: 80,
+    tag: "Core",
+    description: "Ship handling and manoeuvring principles for the officer of the watch.",
+    outcomes: [
+      "Explain how ship handling characteristics affect manoeuvres",
+      "Support arrival, departure and anchoring manoeuvres",
+      "Apply safe practices when manoeuvring near other vessels",
+    ],
+  },
+  {
+    id: "l6-emergencies",
+    levelId: "level6",
+    title: "Emergency Response",
+    hours: 70,
+    tag: "Core",
+    description: "Responding to navigation and shipboard emergencies as an officer.",
+    outcomes: [
+      "Recognise developing emergencies on the bridge",
+      "Apply emergency procedures and communications",
+      "Coordinate the team until the master takes over",
+    ],
+  },
+  {
+    id: "l6-shipping-biz",
+    levelId: "level6",
+    title: "Shipping Business Management",
+    hours: 80,
+    tag: "Core",
+    description: "Commercial and operational aspects of ship management relevant to junior officers.",
+    outcomes: [
+      "Explain the commercial parties around a ship",
+      "Apply basic shipping documentation",
+      "Connect bridge decisions to commercial consequences",
+    ],
+  },
+  {
+    id: "l6-colregs",
+    levelId: "level6",
+    title: "Collision Prevention Regulations",
+    hours: 80,
+    tag: "Common",
+    description: "COLREGs for the officer of the watch: who gives way, and how to act in any visibility.",
+    outcomes: [
+      "Apply the rules in sight of other vessels",
+      "Apply the rules in restricted visibility",
+      "Recognise lights, shapes and sound signals correctly",
+    ],
+  },
+  {
+    id: "l6-meteorology",
+    levelId: "level6",
+    title: "Meteorology",
+    hours: 80,
+    tag: "Common",
+    description: "Weather systems, forecasting and routing decisions for the navigational watch.",
+    outcomes: [
+      "Interpret weather information for the watch",
+      "Recognise weather that affects the passage",
+      "Use meteorology in voyage planning",
+    ],
+  },
+  {
+    id: "l6-law",
+    levelId: "level6",
+    title: "Maritime Law & Conventions",
+    hours: 70,
+    tag: "Common",
+    description: "Maritime law and conventions the officer must apply on board.",
+    outcomes: [
+      "Identify key conventions affecting the watch",
+      "Apply shipboard legal responsibilities at officer level",
+      "Record and report as required by law and company procedure",
+    ],
+  },
+  {
+    id: "l6-stability",
+    levelId: "level6",
+    title: "Ship Stability Principles",
+    hours: 90,
+    tag: "Common",
+    description: "Stability principles for officers responsible for the seaworthiness of the ship.",
+    outcomes: [
+      "Apply stability terms to real loading conditions",
+      "Recognise threats to stability",
+      "Support decisions that keep the ship seaworthy",
+    ],
+  },
+];
 
 export type Db = {
   admins: Person[];
@@ -78,96 +418,26 @@ export type Db = {
   students: Person[];
 };
 
-export const STORAGE_VERSION = 4;
-
-export const resources: Resource[] = [
-  {
-    id: "knqf5-overview",
-    section: "knqf5",
-    kind: "programme",
-    title: "Programme overview",
-    summary: "Able Seafarer Deck Rating · KNQF Level 5.",
-    moment: "Full curriculum PDF for lecturers and students on this pathway.",
-    hours: 1780,
-    pdfUrl: "/curricula/nautical-science-knqf-level-5.pdf",
-    body: "This programme builds the competencies for an Able Seafarer Deck Rating. It covers basic, common and core units, plus industrial attachment. Open the curriculum PDF for unit codes, hours, learning outcomes and assessment.",
-  },
-  { id: "l5-seamanship", section: "knqf5", kind: "unit", title: "Seamanship Practices", summary: "Core deck seamanship.", moment: "Hands-on deck work for ratings.", hours: 80, body: null },
-  { id: "l5-watchkeeping", section: "knqf5", kind: "unit", title: "Watchkeeping Practices", summary: "Safe watchkeeping as a deck rating.", moment: "Keeping a safe watch under supervision.", hours: 80, body: null },
-  { id: "l5-deck-machinery", section: "knqf5", kind: "unit", title: "Deck Machinery & Cargo Gear", summary: "Operation and maintenance of deck machinery and cargo handling gear.", moment: "Working the gear safely on deck.", hours: 70, body: null },
-  { id: "l5-mooring", section: "knqf5", kind: "unit", title: "Berthing, Anchoring & Mooring", summary: "Mooring operations alongside and at anchor.", moment: "Lines, anchors and the berth.", hours: 70, body: null },
-  { id: "l5-cargo", section: "knqf5", kind: "unit", title: "Cargo Handling & Stowage", summary: "Cargo work for ratings.", moment: "Loading and stowing as part of the deck team.", hours: 80, body: null },
-  { id: "l5-ship-handling", section: "knqf5", kind: "unit", title: "Ship Handling & Manoeuvring", summary: "Assisting with ship handling.", moment: "What the rating does during manoeuvres.", hours: 70, body: null },
-  { id: "l5-emergencies", section: "knqf5", kind: "unit", title: "Emergencies at Sea and in Port", summary: "Responding to emergencies.", moment: "When the alarm goes, on the berth or at sea.", hours: 60, body: null },
-  { id: "l5-chartwork", section: "knqf5", kind: "unit", title: "Basic Chartwork Practices", summary: "Introductory chartwork.", moment: "Reading the chart before the next level of study.", hours: 80, body: null },
-  { id: "l5-stability", section: "knqf5", kind: "unit", title: "Ship Stability Principles", summary: "Common unit · stability fundamentals.", moment: "Why the ship sits the way it does.", hours: 80, body: null },
-  { id: "l5-stcw-safety", section: "knqf5", kind: "unit", title: "Basic Sea Safety (STCW)", summary: "Common unit · STCW basic safety.", moment: "The safety baseline before sea service.", hours: 50, body: null },
-
-  {
-    id: "knqf6-overview",
-    section: "knqf6",
-    kind: "programme",
-    title: "Programme overview",
-    summary: "Officer of the Watch pathway · KNQF Level 6.",
-    moment: "Full curriculum PDF aligned to STCW Reg II/1.",
-    hours: 2800,
-    pdfUrl: "/curricula/nautical-science-knqf-level-6.pdf",
-    body: "This programme builds the competencies for an Officer in Charge of a Navigational Watch. It covers passage planning, safe navigational watch, electronic navigation, cargo operations, ship handling and ship management. Open the curriculum PDF for the full unit pack, STCW mapping and assessment rules.",
-  },
-  { id: "l6-seamanship", section: "knqf6", kind: "unit", title: "Seamanship Practices", summary: "Core seamanship for junior officers.", moment: "Deck practice at officer level.", hours: 100, body: null },
-  { id: "l6-navigation", section: "knqf6", kind: "unit", title: "Navigation Principles", summary: "Core navigation theory and practice.", moment: "How the ship finds and holds its way.", hours: 100, body: null },
-  { id: "l6-chartwork", section: "knqf6", kind: "unit", title: "Chartwork Practices", summary: "Chartwork for the navigational watch.", moment: "Paper and plot before the electronic layer.", hours: 90, body: null },
-  { id: "l6-celestial", section: "knqf6", kind: "unit", title: "Celestial Navigation", summary: "Celestial fixes and sight reduction.", moment: "When electronics are not the only answer.", hours: 100, body: null },
-  { id: "l6-bridge", section: "knqf6", kind: "unit", title: "Bridge Equipment & Systems", summary: "Bridge systems the OOW must operate.", moment: "Knowing the kit on the bridge.", hours: 80, body: null },
-  { id: "l6-electronic-nav", section: "knqf6", kind: "unit", title: "Electronic Navigation Equipment", summary: "Radar, ECDIS and related systems.", moment: "Electronic aids in a real watch.", hours: 80, body: null },
-  { id: "l6-cargo", section: "knqf6", kind: "unit", title: "Cargo Handling & Stowage", summary: "Managing cargo operations.", moment: "Cargo as an officer responsibility.", hours: 90, body: null },
-  { id: "l6-watchkeeping", section: "knqf6", kind: "unit", title: "Watchkeeping Duties", summary: "Maintaining a safe navigational watch.", moment: "The OOW on the bridge.", hours: 80, body: null },
-  {
-    id: "l6-voyage",
-    section: "knqf6",
-    kind: "unit",
-    title: "Voyage Planning & Ocean Passage",
-    summary: "Planning and executing the passage.",
-    moment: "From berth to berth, planned properly.",
-    hours: 100,
-    body: "A navigational watch is the time a named officer is responsible for the safe movement of the ship. This unit is where passage planning and ocean passage sit in the Level 6 pack: what is planned, what is monitored, and when the master is called.",
-  },
-  { id: "l6-ship-handling", section: "knqf6", kind: "unit", title: "Ship Handling", summary: "Manoeuvring and ship handling.", moment: "Conning with understanding.", hours: 80, body: null },
-  { id: "l6-emergencies", section: "knqf6", kind: "unit", title: "Emergency Response", summary: "Navigation and shipboard emergencies.", moment: "When the watch becomes an emergency.", hours: 70, body: null },
-  { id: "l6-shipping-biz", section: "knqf6", kind: "unit", title: "Shipping Business Management", summary: "Commercial and operational ship management.", moment: "The business side of the certificate.", hours: 80, body: null },
-  { id: "l6-colregs", section: "knqf6", kind: "unit", title: "Collision Prevention Regulations", summary: "Common unit · COLREGs.", moment: "Who gives way, and why.", hours: 80, body: null },
-  { id: "l6-meteorology", section: "knqf6", kind: "unit", title: "Meteorology", summary: "Common unit · weather and routing.", moment: "Weather that changes the plan.", hours: 80, body: null },
-  { id: "l6-law", section: "knqf6", kind: "unit", title: "Maritime Law & Conventions", summary: "Common unit · law and conventions.", moment: "The rules the officer must apply.", hours: 70, body: null },
-  { id: "l6-stability", section: "knqf6", kind: "unit", title: "Ship Stability Principles", summary: "Common unit · stability.", moment: "Stability decisions that protect the ship.", hours: 90, body: null },
-
-  { id: "gmdss-distress", section: "short", kind: "unit", title: "GMDSS & Distress", summary: "Distress communication.", moment: "The call you hope not to make, practised until it is calm.", body: null },
-  { id: "lsa-ffe-emergencies", section: "short", kind: "unit", title: "LSA, FFE & Emergencies", summary: "Life-saving appliances, firefighting and emergency response.", moment: "A short course a whole class can take together.", body: null },
-];
+export const STORAGE_VERSION = 5;
 
 export const assumptions = [
   {
-    question: "What is this?",
-    decision: "One resource centre. The college admin adds lecturers. Lecturers and the admin add students. Students only read the materials.",
+    question: "Who adds people?",
+    decision: "Only the college admin. Lecturers teach and study; they do not enrol people.",
   },
   {
-    question: "What curricula are loaded?",
-    decision: "Bandari Maritime Academy KNQF Level 5 and Level 6 Nautical Science PDFs, with core (and key common) units listed in the sidebar. Copyright remains with BMA.",
+    question: "What is the course?",
+    decision: "Nautical Science, with KNQF Level 5 and Level 6 pathways. Units are studied in the app. Videos come later.",
   },
   {
-    question: "Who can open it?",
-    decision: "Meant for the institution’s own network. An account is still required. This sample can also run as a hosted preview.",
-  },
-  {
-    question: "What are the caps?",
-    decision: `${lecturerLimit} lecturer logins and ${studentLimit} students, shared across the centre. Placeholder numbers.`,
+    question: "Where did the unit outlines come from?",
+    decision: "Bandari Maritime Academy KNQF Level 5 and Level 6 Nautical Science curricula (2024). Copyright remains with BMA.",
   },
 ];
 
 export function initialDb(): Db {
   return {
-    admins: [
-      { id: "adm-emily", name: "Emily Mutua", email: "emily.mutua@example.com" },
-    ],
+    admins: [{ id: "adm-emily", name: "Emily Mutua", email: "emily.mutua@example.com" }],
     lecturers: [
       { id: "lec-james", name: "James Okello", email: "james.okello@example.com" },
       { id: "lec-sara", name: "Sara Njeri", email: "sara.njeri@example.com" },
@@ -185,10 +455,14 @@ export function initialDb(): Db {
   };
 }
 
-export function findResource(id: string): Resource | undefined {
-  return resources.find((resource) => resource.id === id);
+export function findUnit(id: string): Unit | undefined {
+  return units.find((unit) => unit.id === id);
 }
 
-export function findProgramme(id: SectionId): Programme | undefined {
-  return programmes.find((programme) => programme.id === id);
+export function findLevel(id: LevelId): Level | undefined {
+  return levels.find((level) => level.id === id);
+}
+
+export function unitsForLevel(levelId: LevelId): Unit[] {
+  return units.filter((unit) => unit.levelId === levelId);
 }
