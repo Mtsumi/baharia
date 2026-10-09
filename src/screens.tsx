@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import { assumptions, findResource, lecturerLimit, resources, sections, studentLimit } from "./sample";
+import { assumptions, findProgramme, findResource, lecturerLimit, programmes, resources, sections, studentLimit } from "./sample";
 import { useStore } from "./store";
 
 function initials(name: string): string {
@@ -37,17 +37,17 @@ export function Landing() {
         <article className="point">
           <span className="point-num">01</span>
           <h2>Lecturers</h2>
-          <p>Industry-curated material they can teach from. Courses from COLREGs and navigation through to GMDSS and emergency response.</p>
+          <p>Industry-curated pathways they can teach from — KNQF Level 5 and Level 6 Nautical Science, plus short courses for CPD.</p>
         </article>
         <article className="point">
           <span className="point-num">02</span>
           <h2>Students</h2>
-          <p>Give your students top-tier material to an international standard — the same resources their lecturers use.</p>
+          <p>Give your students top-tier material to an international standard — the same programmes their lecturers use.</p>
         </article>
         <article className="point">
           <span className="point-num">03</span>
           <h2>The institution</h2>
-          <p>Stop chasing curriculum from abroad. Run the resources on your own network, for the people you enrol.</p>
+          <p>Stop chasing curriculum from abroad. Run the programmes on your own network, for the people you enrol.</p>
         </article>
       </section>
     </div>
@@ -127,13 +127,15 @@ export function SectionNav() {
   const currentId = location.pathname.startsWith("/materials/") ? location.pathname.slice("/materials/".length) : "";
   const current = findResource(currentId);
   const [open, setOpen] = useState<Record<string, boolean>>({
-    oow: !current || current.section === "oow",
+    knqf5: current?.section === "knqf5",
+    knqf6: !current || current.section === "knqf6",
     short: current?.section === "short",
   });
 
   return (
     <div className="sections">
       {sections.map((section) => {
+        const programme = findProgramme(section.id);
         const items = resources.filter((resource) => resource.section === section.id);
         const expanded = open[section.id];
         return (
@@ -144,7 +146,7 @@ export function SectionNav() {
               aria-expanded={expanded}
               onClick={() => setOpen((state) => ({ ...state, [section.id]: !state[section.id] }))}
             >
-              {section.title}
+              {programme?.shortTitle ?? section.title}
               <span aria-hidden="true">{expanded ? "▾" : "▸"}</span>
             </button>
             {expanded && (
@@ -169,9 +171,25 @@ export function SectionNav() {
 
 export function Materials() {
   return (
-    <main className="reading">
-      <h1>Resources</h1>
-      <p className="sub">Open a section.</p>
+    <main>
+      <header className="page-head">
+        <p className="kicker">Programmes</p>
+        <h1>Choose a pathway</h1>
+        <p className="sub">KNQF programmes for the college, plus short courses. Open a section on the left, or start from a programme below.</p>
+      </header>
+      <div className="pathway-list">
+        {programmes.map((programme) => {
+          const start = resources.find((resource) => resource.section === programme.id);
+          return (
+            <Link key={programme.id} className="pathway" to={start ? `/materials/${start.id}` : "/materials"}>
+              <span className="kicker">{programme.shortTitle}</span>
+              <h2>{programme.title}</h2>
+              <p>{programme.outcome}</p>
+              {programme.hours > 0 && <p className="pathway-meta">{programme.hours} notional hours · {programme.code}</p>}
+            </Link>
+          );
+        })}
+      </div>
     </main>
   );
 }
@@ -179,14 +197,26 @@ export function Materials() {
 export function ResourcePage() {
   const { resourceId } = useParams();
   const resource = findResource(resourceId ?? "");
-  const section = sections.find((item) => item.id === resource?.section);
-  if (!resource || !section) return <p>That subject is not in this centre.</p>;
+  const programme = resource ? findProgramme(resource.section) : undefined;
+  if (!resource || !programme) return <p>That subject is not in this centre.</p>;
   return (
     <main className="reading">
-      <p className="kicker">{section.title}</p>
+      <p className="kicker">{programme.title}</p>
       <h1>{resource.title}</h1>
       <p className="moment">{resource.moment}</p>
-      {resource.body ? <p className="sub">{resource.body}</p> : <p className="sub">{resource.summary} Reading not added yet.</p>}
+      {resource.hours ? <p className="pathway-meta">{resource.hours} notional hours</p> : null}
+      {resource.body ? <p className="sub">{resource.body}</p> : <p className="sub">{resource.summary} Unit reading not added yet — use the curriculum PDF for outcomes and assessment.</p>}
+      {resource.pdfUrl && (
+        <div className="pdf-actions">
+          <a className="btn" href={resource.pdfUrl} target="_blank" rel="noreferrer">Open curriculum PDF</a>
+          <p className="note-line">{programme.source}</p>
+        </div>
+      )}
+      {!resource.pdfUrl && programme.pdfUrl && resource.kind === "unit" && (
+        <div className="pdf-actions">
+          <a className="btn ghost" href={programme.pdfUrl} target="_blank" rel="noreferrer">Open full {programme.shortTitle} PDF</a>
+        </div>
+      )}
     </main>
   );
 }

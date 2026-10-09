@@ -338,6 +338,21 @@ td { padding: 10px 8px; border-top: 1px solid var(--line); }
 
 .reading { max-width: 68ch; }
 .moment { color: var(--ink); font-family: Fraunces, Georgia, serif; font-size: 20px; line-height: 1.35; margin: 0 0 14px; }
+.pathway-list { display: grid; gap: 14px; max-width: 720px; }
+.pathway {
+  display: block;
+  background: white;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+.pathway:hover { border-color: var(--accent); box-shadow: var(--shadow); }
+.pathway h2 { margin: 4px 0 8px; font-size: 24px; }
+.pathway p { margin: 0; color: var(--muted); }
+.pathway-meta { margin-top: 10px !important; font-size: 13px; color: var(--faint) !important; }
+.pdf-actions { margin-top: 22px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.note-line { margin: 0; font-size: 13px; color: var(--faint); }
 
 @media (max-width: 860px) {
   .points, .gate, .adder, .card-top, .app { display: block; }
