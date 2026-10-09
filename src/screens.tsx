@@ -207,7 +207,7 @@ function UnitGrid({ levelId }: { levelId: LevelId }) {
       <div className="unit-grid">
         {unitsForLevel(levelId).map((unit) => (
           <Link key={unit.id} className="unit-card" to={`/materials/${unit.id}`}>
-            <span className="chip">{unit.tag}</span>
+            <span className="chip">{unit.lessons?.length ? "Ready to study" : unit.tag}</span>
             <h3>{unit.title}</h3>
             <p>{unit.description}</p>
             <span className="unit-hours">{unit.hours} hours</span>
@@ -219,12 +219,21 @@ function UnitGrid({ levelId }: { levelId: LevelId }) {
 }
 
 export function Materials() {
+  const { session, current } = useStore();
+  const firstName = current?.name.split(" ")[0] ?? "";
+  const roleLine =
+    session?.role === "admin"
+      ? "College view of the Nautical Science course your lecturers and students use."
+      : session?.role === "lecturer"
+        ? `${firstName}, open a unit to see the teaching notes and the reading your students get.`
+        : `${firstName}, open a unit and work through the reading. Start with Watchkeeping Duties or Navigation Principles.`;
+
   return (
     <main>
       <header className="page-head course-head">
         <p className="kicker">Course</p>
         <h1>{course.title}</h1>
-        <p className="sub">{course.summary}</p>
+        <p className="sub">{roleLine}</p>
       </header>
       <UnitGrid levelId="level6" />
       <UnitGrid levelId="level5" />
@@ -234,19 +243,36 @@ export function Materials() {
 
 export function ResourcePage() {
   const { resourceId } = useParams();
+  const { session } = useStore();
   const unit = findUnit(resourceId ?? "");
   const level = unit ? findLevel(unit.levelId) : undefined;
+  const [done, setDone] = useState(false);
   if (!unit || !level) return <p>That unit is not in this course.</p>;
+
+  const isLecturer = session?.role === "lecturer" || session?.role === "admin";
+  const hasLessons = Boolean(unit.lessons?.length);
 
   return (
     <main className="unit-page">
       <p className="note-line"><Link className="back" to="/materials">{course.title}</Link> · {level.title}</p>
+      <div className="role-pill">{isLecturer ? "Lecturer view" : "Student view"}</div>
       <p className="kicker">{unit.tag} unit · {unit.hours} hours</p>
       <h1>{unit.title}</h1>
       <p className="lede">{unit.description}</p>
 
+      {isLecturer && unit.teachingNotes && (
+        <section className="study-panel teach">
+          <h2>Teaching notes</h2>
+          <ul className="outcomes teach-list">
+            {unit.teachingNotes.map((note) => (
+              <li key={note}>{note}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <section className="study-panel">
-        <h2>What you will be able to do</h2>
+        <h2>{isLecturer ? "Learning outcomes for the class" : "What you will be able to do"}</h2>
         <ol className="outcomes">
           {unit.outcomes.map((outcome) => (
             <li key={outcome}>{outcome}</li>
@@ -254,13 +280,35 @@ export function ResourcePage() {
         </ol>
       </section>
 
-      <section className="study-panel soft">
-        <h2>Study this unit</h2>
-        <p>
-          Work through the outcomes above with your lecturer. Video lessons and practice questions will sit here later.
-          For now, this is the unit outline you teach and study from inside the centre.
-        </p>
-      </section>
+      {hasLessons ? (
+        <section className="study-stack">
+          <h2 className="study-stack-title">{isLecturer ? "Student reading" : "Study reading"}</h2>
+          {unit.lessons!.map((part, index) => (
+            <article key={part.title} className="lesson-block">
+              <p className="lesson-index">Part {index + 1}</p>
+              <h3>{part.title}</h3>
+              <p>{part.body}</p>
+            </article>
+          ))}
+          {!isLecturer && (
+            <div className="complete-row">
+              <button className="btn" type="button" onClick={() => setDone(true)} disabled={done}>
+                {done ? "Marked as studied" : "Mark as studied"}
+              </button>
+              {done && <p className="ok">Saved on this device for the demo.</p>}
+            </div>
+          )}
+        </section>
+      ) : (
+        <section className="study-panel soft">
+          <h2>Outline ready</h2>
+          <p>
+            {isLecturer
+              ? "This unit is listed for the course. Full reading can be added the same way as Watchkeeping Duties and Navigation Principles."
+              : "Your lecturer will open the full reading for this unit soon. Try Watchkeeping Duties or Navigation Principles to see how study works in the centre."}
+          </p>
+        </section>
+      )}
     </main>
   );
 }

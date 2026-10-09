@@ -22,6 +22,11 @@ export type Level = {
   blurb: string;
 };
 
+export type LessonPart = {
+  title: string;
+  body: string;
+};
+
 export type Unit = {
   id: string;
   levelId: LevelId;
@@ -30,6 +35,9 @@ export type Unit = {
   tag: string;
   description: string;
   outcomes: string[];
+  /** In-app reading. Empty means outline only for the demo. */
+  lessons?: LessonPart[];
+  teachingNotes?: string[];
 };
 
 export const course = {
@@ -219,6 +227,29 @@ export const units: Unit[] = [
       "Apply principles of position fixing",
       "Apply tidal and great-circle sailing principles",
     ],
+    teachingNotes: [
+      "Open with the shape of the Earth and why latitude and longitude matter on a chart.",
+      "Have students correct a sample compass error before you move to sailing methods.",
+      "Finish by linking tides and great-circle sailing to a short passage-planning exercise.",
+    ],
+    lessons: [
+      {
+        title: "The Earth as a navigation surface",
+        body: "Navigation starts with a model of the Earth. Meridians run from pole to pole. Parallels of latitude run east–west. A position is fixed by latitude and longitude on an agreed datum. When you change chart or publication, check that you are still working on the same reference.",
+      },
+      {
+        title: "Charts and nautical publications",
+        body: "A chart is a working tool, not a picture. Read the title block, scale, units, and correction status before you plot. Publications such as sailing directions, light lists and tide tables sit beside the chart. The officer’s job is to choose the right document for the question in front of them.",
+      },
+      {
+        title: "Compass error and sailing methods",
+        body: "Courses and bearings are useless until compass error is allowed for. Parallel and plane sailing work for shorter distances. Mercator sailing is the practical method on most ocean charts. Great-circle sailing shortens long ocean legs but needs care near the poles and with intermediate waypoints.",
+      },
+      {
+        title: "Position fixing and tides",
+        body: "A fix is only as good as the lines that made it. Cross visual bearings, radar ranges and electronic positions, and treat a single source with caution. Tides change depth and current. Apply tidal principles before you commit the ship to a shallow passage or a tight berth.",
+      },
+    ],
   },
   {
     id: "l6-chartwork",
@@ -302,6 +333,29 @@ export const units: Unit[] = [
       "Keep watch in coastal and congested waters",
       "Recognise lights, shapes and sound signals",
       "Implement navigational watch procedures with a pilot on board",
+    ],
+    teachingNotes: [
+      "Run a live handover drill: one student hands over, another takes over, class scores what was missed.",
+      "Separate clear-weather watch from restricted visibility before you mix COLREGs into the lesson.",
+      "End with pilot-on-board responsibilities so students do not treat the pilot as a replacement for the watch.",
+    ],
+    lessons: [
+      {
+        title: "Taking over and handing over the watch",
+        body: "A watch begins before you say you have it. Check position, course, speed, traffic, weather, pending orders and the master’s standing orders. When you hand over, leave the next officer with a clear picture — not a surprise. If something is uncertain, say so before you leave the bridge.",
+      },
+      {
+        title: "Lookout and conducting the vessel",
+        body: "Lookout is continuous and by all available means. Sight, hearing, radar and AIS support each other; none replaces the others alone. In clear weather and in restricted visibility the officer still owns the con. Calling the master early is part of a good watch, not a failure of it.",
+      },
+      {
+        title: "Anchorage, port and coastal watches",
+        body: "At anchor you watch position, swinging room and traffic. In port you watch the berth, access and cargo-related risks. In coastal and congested waters the traffic picture changes fast — slow down the plan in your head before the ship runs out of sea room.",
+      },
+      {
+        title: "Signals, distress and the pilot",
+        body: "Lights, shapes and sound signals are the language of the rules. Know them before you need them. Distress signals are rare and must be unmistakable. With a pilot on board the ship still has an officer of the watch. The pilot advises; the master and the watch remain responsible for the safe navigation of the ship.",
+      },
     ],
   },
   {
