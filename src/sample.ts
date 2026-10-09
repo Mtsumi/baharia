@@ -54,7 +54,7 @@ export const courses: Course[] = [
   {
     id: "nautical-science",
     title: "Nautical Science",
-    summary: "Deck ratings and officers of the watch — KNQF Level 5 and Level 6.",
+    summary: "Guided notes for deck rating and officer of the watch modules (KNQF Level 5 and Level 6).",
     status: "open",
   },
   {
@@ -90,7 +90,7 @@ export const levels: Level[] = [
     code: "1041 554 A",
     outcome: "Officer of the Watch pathway",
     hours: 2800,
-    blurb: "For officers training toward STCW Reg II/1 — Officer in Charge of a Navigational Watch.",
+    blurb: "For officers training toward STCW Reg II/1 (Officer in Charge of a Navigational Watch).",
   },
 ];
 
@@ -275,7 +275,7 @@ export const units: Unit[] = [
     lessons: [
       {
         title: "The Earth as a navigation surface",
-        body: "Navigation starts with a model of the Earth. Meridians run from pole to pole. Parallels of latitude run east–west. A position is fixed by latitude and longitude on an agreed datum. When you change chart or publication, check that you are still working on the same reference.",
+        body: "Navigation starts with a model of the Earth. Meridians run from pole to pole. Parallels of latitude run east-west. A position is fixed by latitude and longitude on an agreed datum. When you change chart or publication, check that you are still working on the same reference.",
       },
       {
         title: "Charts and nautical publications",
@@ -388,7 +388,7 @@ export const units: Unit[] = [
     lessons: [
       {
         title: "Taking over and handing over the watch",
-        body: "A watch begins before you say you have it. Check position, course, speed, traffic, weather, pending orders and the master’s standing orders. When you hand over, leave the next officer with a clear picture — not a surprise. If something is uncertain, say so before you leave the bridge.",
+        body: "A watch begins before you say you have it. Check position, course, speed, traffic, weather, pending orders and the master’s standing orders. When you hand over, leave the next officer with a clear picture, not a surprise. If something is uncertain, say so before you leave the bridge.",
       },
       {
         title: "Lookout and conducting the vessel",
@@ -396,7 +396,7 @@ export const units: Unit[] = [
       },
       {
         title: "Anchorage, port and coastal watches",
-        body: "At anchor you watch position, swinging room and traffic. In port you watch the berth, access and cargo-related risks. In coastal and congested waters the traffic picture changes fast — slow down the plan in your head before the ship runs out of sea room.",
+        body: "At anchor you watch position, swinging room and traffic. In port you watch the berth, access and cargo-related risks. In coastal and congested waters the traffic picture changes fast. Slow down the plan in your head before the ship runs out of sea room.",
       },
       {
         title: "Signals, distress and the pilot",
@@ -534,12 +534,12 @@ export const assumptions = [
     decision: "Only the college admin. Lecturers teach and study; they do not enrol people.",
   },
   {
-    question: "What courses are in the catalogue?",
-    decision: "Nautical Science is open (Level 5 and Level 6). Marine Engineering and Port Operations are listed as coming next. More courses can be added the same way.",
+    question: "What is the product?",
+    decision: "Colleges already teach similar modules. Bahari gives better notes for those modules, in a guided order for lecturers and students. Nautical Science is the first course open; more follow.",
   },
   {
     question: "Where did the unit outlines come from?",
-    decision: "Bandari Maritime Academy KNQF Level 5 and Level 6 Nautical Science curricula (2024). Copyright remains with BMA.",
+    decision: "Bandari Maritime Academy KNQF Level 5 and Level 6 Nautical Science curricula (2024). Copyright remains with BMA. The app presents guided notes, not a PDF download.",
   },
 ];
 

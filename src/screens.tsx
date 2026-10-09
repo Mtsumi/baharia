@@ -36,9 +36,9 @@ export function Landing() {
         </header>
         <section className="hero">
           <p className="kicker light">For maritime colleges and training centres</p>
-          <h1>Maritime resources and upskilling, to an international standard.</h1>
+          <h1>Better notes for the modules your college already teaches.</h1>
           <p className="sub light">
-            Give your lecturers industry-curated material, and put the same resources in front of your students.
+            Schools cover similar modules in different ways. We give lecturers and students clearer notes, in a guided order they can teach and study from.
           </p>
           <div className="hero-actions">
             <a className="btn solid-light" href="mailto:hello@baharimaritime.com?subject=Bahari%20resource%20centre">Book a call</a>
@@ -56,24 +56,24 @@ export function Landing() {
       </div>
 
       <section className="alive-strip">
-        <p className="alive-quote">Your college should not have to assemble a syllabus from scraps. The courses are ready. Your people teach and learn from them.</p>
+        <p className="alive-quote">Same modules. Stronger notes. A clear path through the course for both the lecturer and the student.</p>
       </section>
 
       <section className="points">
         <article className="point">
           <span className="point-num">01</span>
           <h2>Lecturers</h2>
-          <p>Curated maritime courses they can teach from — Nautical Science first, with more programmes to follow.</p>
+          <p>Teach from better notes on the modules you already cover, set out in an order that guides the class.</p>
         </article>
         <article className="point">
           <span className="point-num">02</span>
           <h2>Students</h2>
-          <p>Top-tier material to an international standard, studied in the centre — not chased as downloads.</p>
+          <p>Study the same modules in a clear sequence, with notes written for learning, not for filing away.</p>
         </article>
         <article className="point">
           <span className="point-num">03</span>
           <h2>The institution</h2>
-          <p>Stop worrying about curriculum. Enrol your people, and run the courses on your own network.</p>
+          <p>Keep your own modules. Add people. Run the guided notes on your network.</p>
         </article>
       </section>
     </div>
@@ -239,10 +239,10 @@ export function Materials() {
   const firstName = current?.name.split(" ")[0] ?? "";
   const roleLine =
     session?.role === "admin"
-      ? "The courses available to your college. Nautical Science is open; more programmes follow."
+      ? "Guided notes for the modules your college teaches. Nautical Science is open; more courses follow."
       : session?.role === "lecturer"
-        ? `${firstName}, pick a course. Open Nautical Science to teach and review units.`
-        : `${firstName}, pick a course to study. Start with Nautical Science.`;
+        ? `${firstName}, open a course for clearer notes in a teaching order. Start with Nautical Science.`
+        : `${firstName}, open a course and follow the module order. Start with Nautical Science.`;
 
   return (
     <main>
