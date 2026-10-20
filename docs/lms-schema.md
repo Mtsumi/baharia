@@ -1,4 +1,4 @@
-# Baharia LMS — MVP schema (greenlight)
+# Baharia LMS — MVP schema
 
 **Scope:** Phase 1 backend. One user → one organization. Role on `memberships`. No multi-college accounts. No time-on-page until Phase 2.
 
