@@ -1,5 +1,7 @@
 # Baharia LMS — MVP schema
 
+> **Review the canonical plan first:** [`lms-architecture.md`](./lms-architecture.md). It contains the approved stack proposal, corrected Phase 1 model, security and licence controls, repository structure, frontend areas, APIs, testing, deployment, and delivery phases. This file preserves the earlier field-by-field keep/cut discussion as an appendix; where the two differ, the architecture plan is authoritative.
+
 **Scope:** Phase 1 backend. One user → one organization. Role on `memberships`. No multi-college accounts. No time-on-page until Phase 2.
 
 **Ask the room:** Approve these 11 tables and Phase 1 APIs so we can build the backend. Frontend polish is separate.
