@@ -96,7 +96,7 @@ erDiagram
   }
 ```
 
-**One sentence:** Org has licence + people (memberships) + classes (cohorts) → cohort enrols students and gets one assignment (course + optional sections) → sections contain units → enrolment tracks progress per unit.
+Org has licence + people (memberships) + classes (cohorts) → cohort enrols students and gets one assignment (course + optional sections) → sections contain units → enrolment tracks progress per unit.
 
 ---
 
@@ -231,11 +231,11 @@ erDiagram
 
 ---
 
-## Dropped from MVP (whole tables)
+## Dropped from MVP
 
 | Table | Why |
 |---|---|
-| `lesson_events` | Time-on-page / heartbeats = Phase 2 |
+| `lesson_events` | To track Time-on-page / heartbeats = Phase 2 |
 | quizzes, uploads, certificates | Explicitly out |
 
 **Phase 2 add:** `lesson_events` (`enrolment_id`, `unit_id`, `type`, `seconds`, `created_at`) and optionally `dwell_seconds` on `lesson_progress`.
@@ -262,6 +262,3 @@ erDiagram
 
 ---
 
-## Frontend for greenlight?
-
-Schema + API list is enough for eng approval. Existing sample UI is optional context only — do not block backend on a new frontend.
